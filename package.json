@@ -1,0 +1,14 @@
+{
+  "name": "gdoodle",
+  "version": "1.0.0",
+  "description": "Generate boilerplate for a canvas doodle",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "gdoodle": "./index.js"
+  },
+  "author": "Jonathan Pepin",
+  "license": "MIT"
+}
