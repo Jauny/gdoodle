@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
+import fs from 'fs';
 
-var chalk = require('chalk');
-var program = require('commander');
+import chalk from 'chalk';
+import program from 'commander';
 
-var folder;
+let folder;
 program
   .arguments('[fldr]')
-  .action(function(fldr) {
+  .action(fldr => {
     folder = fldr;
   })
   .parse(process.argv);
@@ -18,7 +18,7 @@ if (!folder) {
   process.exit(1);
 }
 
-var dirPath = process.cwd() + '/' + folder;
+const dirPath = `${process.cwd()}/${folder}`;
 try {
   fs.mkdirSync(dirPath);
 } catch(err) {
@@ -26,9 +26,9 @@ try {
   process.exit(1);
 }
 
-var jsPath = dirPath + '/script.js';
-fs.createReadStream(__dirname + '/files/script.js')
-  .on('error', function(err) {
+const jsPath = `${dirPath}/script.js`;
+fs.createReadStream(`${__dirname}/files/script.js`)
+  .on('error', err => {
     fs.unlinkSync(jsPath);
     fs.unlinkSync(htmlPath);
     fs.rmdirSync(dirPath);
@@ -37,16 +37,16 @@ fs.createReadStream(__dirname + '/files/script.js')
   })
   .pipe(fs.createWriteStream(jsPath));
 
-var htmlPath = dirPath + '/index.html';
-fs.createReadStream(__dirname + '/files/template.html')
-  .on('error', function(err) {
+const htmlPath = `${dirPath}/index.html`;
+fs.createReadStream(`${__dirname}/../static/template.html`)
+  .on('error', err => {
     fs.unlinkSync(jsPath);
     fs.unlinkSync(htmlPath);
     fs.rmdirSync(dirPath);
     console.log(chalk.red(err));
     process.exit(1);
   })
-  .on('close', function() {
+  .on('close', () => {
     console.log(chalk.green('Created project in %s'), folder);
   })
   .pipe(fs.createWriteStream(htmlPath));
