@@ -1,22 +1,24 @@
 /*
  * Thing is a the basic drawable entity on the canvas
  */
-var Thing = function(x, y, canvas, ctx) {
-  this.canvas = canvas;
-  this.ctx = ctx;
+class Thing {
+  constructor(x, y, canvas, ctx) {
+    this.canvas = canvas;
+    this.ctx = ctx;
 
-  // position on cavas
-  this.x = x;
-  this.y = y;
+    // position on cavas
+    this.x = x;
+    this.y = y;
 
-  // velocity, movement
-  this.vx = 0.5;
-  this.vy = 0.5;
+    // velocity, movement
+    this.vx = 0.5;
+    this.vy = 0.5;
 
-  this.size = 5;
+    this.size = 5;
+  }
 
   // update cycle called every draw loop
-  this.update = function() {
+  update() {
     this.x += this.vx;
     this.y += this.vy;
 
@@ -31,30 +33,30 @@ var Thing = function(x, y, canvas, ctx) {
     } else if (this.y > this.canvas.width) {
       this.y = 0;
     }
-  };
+  }
 
-  this.render = function() {
+  render() {
     this.ctx.fillStyle = 'orange';
     // "- this.size / 2" draws at the center of Thing, instead of start at top left
     this.ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
-  };
-};
+  }
+}
 
 /*
  * Some basic helper functions
  */
 // getMousePos returns {x, y} position of mouse cursor
-var getMousePos = function(evt, canvas) {
-  var rect = canvas.getBoundingClientRect();
+const getMousePos = (evt, canvas) => {
+  const rect = canvas.getBoundingClientRect();
   return {
     y: evt.clientY - rect.top,
     x: evt.clientX - rect.left
-  };
-};
+  }
+}
 
-var handleMouseClick = function(evt, canvas) {
-  var mousePos = getMousePos(evt, canvas);
-  console.log('mouseX: %s, mouseY: %s', mousePos.x, mousePos.y);
+const handleMouseClick = (evt, canvas) => {
+  const mousePos = getMousePos(evt, canvas);
+  console.log(`mouseX: ${mousePos.x}, mouseY: ${mousePos.y}`);
 };
 
 /*
@@ -65,44 +67,44 @@ var handleMouseClick = function(evt, canvas) {
  * setup is a one time call to select the canvas DOM element
  * and start a loop 30 times / second.
  */
-var draw = function(canvas, ctx, things) {
-  ctx.fillStyle = 'black';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+const draw = (canvas, ctx, things) => {
+  ctx.fillStyle = 'black'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-  for (var i = 0; i < things.length; i++) {
-    things[i].update();
-    things[i].render();
+  for (thing of things) {
+    thing.update();
+    thing.render();
   }
-};
+}
 
-var setup = function() {
+const setup = () => {
   // get canvas from DOM
-  var canvas = document.getElementById('canvas');
-  var ctx = canvas.getContext('2d');
+  const canvas = document.getElementById('canvas')
+  const ctx = canvas.getContext('2d')
 
   // generate some Things
-  var things = [];
+  const things = [];
   for (var i = 0; i < 10; i++) {
     things.push(new Thing(
       Math.random() * canvas.width,
       Math.random() * canvas.height,
       canvas,
       ctx)
-    );
+    )
   }
 
   // setup the rendering loop
-  window.setInterval(function() {
-    draw(canvas, ctx, things);
-  }, 1000/60);
+  window.setInterval(() => {
+    draw(canvas, ctx, things)
+  }, 1000/60)
 
   // listener for mouse click
-  canvas.addEventListener('click', function(evt) {
-    handleMouseClick(evt, canvas);
-  });
-};
+  canvas.addEventListener('click', evt => {
+    handleMouseClick(evt, canvas)
+  })
+}
 
-setup();
+setup()
 
 /*
  * Cheat sheet

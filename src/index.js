@@ -27,7 +27,7 @@ try {
 }
 
 const jsPath = `${dirPath}/script.js`;
-fs.createReadStream(`${__dirname}/files/script.js`)
+fs.createReadStream(`${__dirname}/../static/script.js`)
   .on('error', err => {
     fs.unlinkSync(jsPath);
     fs.unlinkSync(htmlPath);
